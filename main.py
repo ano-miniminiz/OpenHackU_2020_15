@@ -54,7 +54,7 @@ def handle_message(event):
     if event.message.text in language_list:
         sticker_list = [[11537, 52002750], [11537, 52002751], [11537, 52002763],
                         [11538, 51626501], [11538, 51626506], [11538, 51626515]]
-        r = random.randint(0, 6)
+        r = random.randint(0, 5)
 
         # スタンプを返す
         line_bot_api.reply_message(event.reply_token, StickerSendMessage(package_id=sticker_list[r][0], sticker_id=sticker_list[r][1]))
