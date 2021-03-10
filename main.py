@@ -45,21 +45,21 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     language_list = ["やかましいわ！", "知らんがな", "欧米かっ！", "ちょっと何言ってるかわからない",
-                     "太るって", "病院行きな", "食べすぎだよ"]
+                     "太るって！", "病院行きな", "食べすぎだよ"]
     items = [QuickReplyButton(action=MessageAction(label=f"{language}", text=f"{language}"))
              for language in language_list]
 
     if event.message.text in language_list:
         # スタンプを返す
-        line_bot_api.reply_message(event.reply_token, StickerSendMessage(package_id=11537,sticker_id=52002763))
+        line_bot_api.reply_message(event.reply_token, StickerSendMessage(package_id=11537, sticker_id=52002763))
 
     elif event.message.text == "まんざい":
-        # 本来はここで韻を踏んだものを受け取って送る
+        # 本来はここで韻を踏んだもの(text)を受け取って送る
         messages = TextSendMessage(text="ぜんざい", quick_reply=QuickReply(items=items))
         line_bot_api.reply_message(event.reply_token, messages=messages)
 
     else:
-        # オウム返し（そのうち不要になる）
+        # オウム返し(そのうち不要になる)
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=event.message.text))
 
 # QuickReply追加部分
