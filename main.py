@@ -43,18 +43,18 @@ def callback():
     return 'OK'
 
 @handler.add(MessageEvent, message=TextMessage)
-# def handle_message(event):
-#     line_bot_api.reply_message(
-#         event.reply_token,
-#         TextSendMessage(text=event.message.text))
+def handle_message(event):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=event.message.text))
 
 # QuickReply追加部分
+# 何を送っても同じ反応をする
 def response_message(event):
-    language_list = ["Ruby", "Python", "PHP", "Java", "C"]
-
-    items = [QuickReplyButton(action=MessageAction(label=f"{language}", text=f"{language}が好き")) for language in language_list]
-
-    messages = TextSendMessage(text="どの言語が好きですか?", quick_reply=QuickReply(items=items))
+    language_list = ["やかましいわ", "知らんがな", "欧米かっ", "ちょっと何言ってるかわからない",
+                     "太るって", "病院行きな", "食べすぎだよ"]
+    items = [QuickReplyButton(action=MessageAction(label=f"{language}", text=f"{language}！")) for language in language_list]
+    messages = TextSendMessage(text="スパゲッティ", quick_reply=QuickReply(items=items))
 
     line_bot_api.reply_message(event.reply_token, messages=messages)
 # ここまで
