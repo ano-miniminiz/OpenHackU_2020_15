@@ -51,7 +51,7 @@ def handle_message(event):
 
     if event.message.text in language_list:
         # スタンプを返す
-        line_bot_api.reply_message(event.reply_token, StickerSendMessage(package_id=11537,sticker_id=52002750))
+        line_bot_api.reply_message(event.reply_token, StickerSendMessage(package_id=11537,sticker_id=52002763))
 
     elif event.message.text == "まんざい":
         # 本来はここで韻を踏んだものを受け取って送る
