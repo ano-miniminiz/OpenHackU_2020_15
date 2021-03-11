@@ -1,6 +1,7 @@
 from flask import Flask, request, abort
 import os
 import random
+import fat
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -50,9 +51,10 @@ def callback():
 def handle_follow(event):
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text='友達追加ありがとう！\n遊び方ガイドはこちら↓\n '
-                             'https://note.com/roast_official/n/ndc7d00f38d44\n「まんざい」と入力してみてね！')
-    )
+        [TextSendMessage(text='友達追加ありがとう！\n遊び方ガイドはこちら↓\n '
+                              'https://note.com/roast_official/n/ndc7d00f38d44'),
+         TextSendMessage(text='「まんざい」と入力してみてね！')]
+        )
 
 
 # elifの部分は別クラスにするのもアリ
@@ -62,10 +64,11 @@ def handle_message(event):
                      "太るって！", "病院行きな", "食べすぎだよ"]
     items = [QuickReplyButton(action=MessageAction(label=f"{language}", text=f"{language}"))
              for language in language_list]
+    sticker_list = [['11537', 52002750], ['11537', 52002751], ['11537', 52002763],
+                    ['11538', 51626501], ['11538', 51626506], ['11538', 51626515]]
 
     if event.message.text in language_list:
-        sticker_list = [['11537', 52002750], ['11537', 52002751], ['11537', 52002763],
-                        ['11538', 51626501], ['11538', 51626506], ['11538', 51626515]]
+
         r = random.randint(0, 5)
 
         # スタンプを返す
@@ -73,14 +76,28 @@ def handle_message(event):
             event.reply_token,
             StickerSendMessage(package_id=sticker_list[r][0], sticker_id=sticker_list[r][1]))
 
-    elif event.message.text == "まんざい":
-        # 本来はここで韻を踏んだもの(text)を受け取って送る
-        messages = TextSendMessage(text="ぜんざい", quick_reply=QuickReply(items=items))
+    elif event.message.text == "まんざい" or event.message.text == "漫才":
+        messages = TextSendMessage("ぜんざい", quick_reply=QuickReply(items=items))
         line_bot_api.reply_message(event.reply_token, messages=messages)
 
+    elif len(event.message.text > 10):
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("ちょっと単語が長すぎるなぁ…"))
+
+    elif type(event.message) == 'sticker':
+        line_bot_api.reply_message(
+            event.reply_token,
+            StickerSendMessage(package_id=sticker_list[4][0], sticker_id=sticker_list[4][1]))
     else:
-        # オウム返し(そのうち不要になる)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=event.message.text))
+        # 韻を踏んだもの(reply_text)を受け取って送る
+        # reply_text = fat.main(event.message.text)
+        reply_text = "うーん"
+        messages = TextSendMessage(reply_text, quick_reply=QuickReply(items=items))
+        line_bot_api.reply_message(event.reply_token, messages=messages)
+
+
+@handler.add(MessageEvent, message=StickerSendMessage)
+def reply_message(event):
+    event.message.sti
 
 
 if __name__ == "__main__":
