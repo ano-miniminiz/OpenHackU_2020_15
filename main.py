@@ -104,7 +104,7 @@ def handle_message(event):
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_message(event):
     line_bot_api.reply_message(event.reply_token,
-                               StickerSendMessage(package_id=11539, sticker_id=52114129))
+                               StickerSendMessage(package_id=11538, sticker_id=51626506))
 
 
 if __name__ == "__main__":
