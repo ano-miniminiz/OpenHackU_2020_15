@@ -1,7 +1,7 @@
 from flask import Flask, request, abort
 import os
 import random
-import fat
+from fat import main
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -68,35 +68,38 @@ def handle_message(event):
     sticker_list = [['11537', 52002750], ['11537', 52002751], ['11537', 52002763],
                     ['11538', 51626501], ['11538', 51626506], ['11538', 51626515]]
 
+    # クイックリプライメッセージを受け取ったとき
     if event.message.text in language_list:
-
         r = random.randint(0, 5)
-
         # スタンプを返す
         line_bot_api.reply_message(
             event.reply_token,
             StickerSendMessage(package_id=sticker_list[r][0], sticker_id=sticker_list[r][1]))
 
+    # 「漫才」「まんざい」を受け取ったとき
     elif event.message.text == "まんざい" or event.message.text == "漫才":
         messages = TextSendMessage("ぜんざい", quick_reply=QuickReply(items=items))
         line_bot_api.reply_message(event.reply_token, messages=messages)
 
+    # 受け取ったメッセージが10字より大きいとき
     elif len(event.message.text) > 10:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("ちょっと単語が長すぎるなぁ…"))
 
     else:
         # 韻を踏んだもの(reply_text)を受け取って送る
-        # reply_text = fat.main(event.message.text)
-        reply_text = "うーん"
+        reply_text = main(event.message.text)
         messages = TextSendMessage(reply_text, quick_reply=QuickReply(items=items))
         line_bot_api.reply_message(event.reply_token, messages=messages)
 
 
+# スタンプメッセージを受け取ったとき
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_message(event):
     line_bot_api.reply_message(event.reply_token,
-                            StickerSendMessage(package_id=11539, sticker_id=52114129))
+                               StickerSendMessage(package_id=11539, sticker_id=52114129))
 
+
+# 画像メッセージを受け取ったとき
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_message(event):
     line_bot_api.reply_message(event.reply_token,
