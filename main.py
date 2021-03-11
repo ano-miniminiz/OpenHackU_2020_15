@@ -11,7 +11,8 @@ from linebot.exceptions import (
 )
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
-    QuickReplyButton, MessageAction, QuickReply, StickerMessage, StickerSendMessage, FollowEvent
+    QuickReplyButton, MessageAction, QuickReply,
+    StickerMessage, StickerSendMessage, FollowEvent, ImageMessage, ImageSendMessage
 )
 
 app = Flask(__name__)
@@ -98,7 +99,12 @@ def handle_message(event):
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_message(event):
     line_bot_api.reply_message(event.reply_token,
-                            StickerSendMessage(package_id=event.message.package_id,sticker_id=event.message.sticker_id))
+                            StickerSendMessage(package_id=11539, sticker_id=52114129))
+
+@handler.add(MessageEvent, message=ImageMessage)
+def handle_message(event):
+    line_bot_api.reply_message(event.reply_token,
+                               StickerSendMessage(package_id=11539, sticker_id=52114129))
 
 
 if __name__ == "__main__":
