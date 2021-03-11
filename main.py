@@ -95,9 +95,10 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, messages=messages)
 
 
-# @handler.add(MessageEvent, message=StickerSendMessage)
-# def reply_message(event):
-#     event.message.sti
+@handler.add(MessageEvent, message=StickerSendMessage)
+def handle_message(event):
+    line_bot_api.reply_message(event.reply_token,
+                               StickerSendMessage(package_id=event.message.package_id,sticker_id=event.message.sticker_id))
 
 
 if __name__ == "__main__":
