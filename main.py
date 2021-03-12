@@ -1,6 +1,8 @@
 from flask import Flask, request, abort
 import os
 import random
+import fat
+import createRichmenu as cr
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -49,6 +51,7 @@ def callback():
 
 @handler.add(FollowEvent)
 def handle_follow(event):
+    cr.createRichmenu()
     line_bot_api.reply_message(
         event.reply_token,
         [TextSendMessage(text='友達追加ありがとう！\n遊び方ガイドはこちら↓\n '
@@ -85,10 +88,16 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage("単語が長いよ！" + "\uDBC0\uDC9F"))
 
     # 数字やローマ字を受け取ったときの処理
+    # else:
+    #     # 韻を踏んだもの(reply_text)を受け取って送る
+    #     # reply_text = main(event.message.text)
+    #     reply_text = "ちょっと何言ってるか分からない" + "\uDBC0\uDC86"
+    #     messages = TextSendMessage(reply_text, quick_reply=QuickReply(items=items))
+    #     line_bot_api.reply_message(event.reply_token, messages=messages)
     else:
         # 韻を踏んだもの(reply_text)を受け取って送る
-        # reply_text = main(event.message.text)
-        reply_text = "ちょっと何言ってるか分からない" + "\uDBC0\uDC86"
+        word = event.message.text
+        reply_text = fat.message_generate(word)
         messages = TextSendMessage(reply_text, quick_reply=QuickReply(items=items))
         line_bot_api.reply_message(event.reply_token, messages=messages)
 

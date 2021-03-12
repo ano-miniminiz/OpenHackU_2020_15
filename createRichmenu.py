@@ -14,6 +14,7 @@ YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]
 line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(YOUR_CHANNEL_SECRET)
 
+
 def createRichmenu():
     result = False
     try:
@@ -51,5 +52,3 @@ def createRichmenu():
 
     return result
 
-if __name__ == "__main__":
-    createRichmenu()
