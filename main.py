@@ -108,7 +108,7 @@ def handle_message(event):
     else:
         # 韻を踏んだもの(reply_text)を受け取って送る
         word = event.message.text
-        reply_text = fat.message_generate(word)
+        reply_text = fat.main(word)
         messages = TextSendMessage(reply_text, quick_reply=QuickReply(items=items))
         line_bot_api.reply_message(event.reply_token, messages=messages)
 
