@@ -48,9 +48,6 @@ def callback():
     return 'OK'
 
 
-# cr.createRichmenu()
-
-
 @handler.add(FollowEvent)
 def handle_follow(event):
     line_bot_api.reply_message(
