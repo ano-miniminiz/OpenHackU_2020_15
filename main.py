@@ -97,7 +97,7 @@ def handle_message(event):
         else:
             line_bot_api.reply_message(event.reply_token, TextSendMessage(event.message.text))
 
-    elif re.compile(r'^[a-zA-Z_!"#$%&-+:/\\ \']+$').match(event.message.text) is not None:
+    elif re.compile(r'^[0-9a-zA-Z_!"#$%&-+:/\\ \']+$').match(event.message.text) is not None:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("Pardon?" + "\uDBC0\uDC9F"))
 
     else:
