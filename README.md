@@ -97,7 +97,7 @@ def handle_message(event):
 
 if __name__ == "__main__":
 #    app.run()
-    port = int(os.getenv("PORT"))
+    port = int(os.getenv("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
 ```
 
@@ -132,6 +132,7 @@ $ heroku config --app {自分のアプリ名}
 <br>
 
 ## その他設定ファイルの作成
+＊作成しないとherokuでのpush時にErrorがでます
 
 ・python、flask、line-bot-sdkのバージョンを確認する
 ```
@@ -158,7 +159,7 @@ web: python main.py
 ```
 ・エディタから拡張子なしファイルが作成できない場合はコマンドプロンプトから作成(/作業ディレクトリ)
 ```
-$ echo web:python main.py > Procfile
+$ echo web: python main.py > Procfile
 ```
 
 <br>
